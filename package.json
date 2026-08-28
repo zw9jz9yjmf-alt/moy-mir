@@ -1,0 +1,39 @@
+{
+  "name": "moy-mir",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "materialize": "node bootstrap.mjs",
+    "build": "node bootstrap.mjs && vite build",
+    "build:only": "vite build",
+    "typecheck": "node bootstrap.mjs && tsc --noEmit",
+    "test": "node bootstrap.mjs && vitest run",
+    "db:migrations:apply": "node bootstrap.mjs && wrangler d1 migrations apply DB --remote",
+    "deploy": "node bootstrap.mjs && vite build && wrangler deploy && wrangler d1 migrations apply DB --remote"
+  },
+  "dependencies": {
+    "@simplewebauthn/browser": "^13.2.2",
+    "@simplewebauthn/server": "^13.2.2",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.13.7",
+    "@cloudflare/workers-types": "^4.20260827.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.2",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.3",
+    "vitest": "^3.2.4",
+    "wrangler": "^4.68.0"
+  },
+  "cloudflare": {
+    "bindings": {
+      "OWNER_BOOTSTRAP_SECRET": {
+        "description": "Придумай длинную секретную фразу (минимум 16 символов) для первого входа владельца. Это секрет, не публикуй его."
+      }
+    }
+  }
+}

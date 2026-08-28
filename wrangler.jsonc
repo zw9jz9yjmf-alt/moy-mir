@@ -1,0 +1,34 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "moy-mir",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-08-28",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "moy-mir-db" }
+  ],
+  "kv_namespaces": [
+    { "binding": "MATERIALS" }
+  ],
+  "ai": { "binding": "AI" },
+  "queues": {
+    "producers": [
+      { "binding": "TASK_QUEUE", "queue": "moy-mir-tasks" }
+    ],
+    "consumers": [
+      { "queue": "moy-mir-tasks", "max_batch_size": 5, "max_batch_timeout": 5, "max_retries": 3 }
+    ]
+  },
+  "vars": {
+    "ZERO_COST_MODE": "true",
+    "DEFAULT_AI_MODEL": "@cf/zai-org/glm-4.7-flash",
+    "AUTO_IMAGE_GENERATION": "false",
+    "BACKGROUND_AI_ENABLED": "false"
+  }
+}
